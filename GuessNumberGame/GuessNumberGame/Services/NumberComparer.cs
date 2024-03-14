@@ -1,4 +1,4 @@
-﻿namespace GuessGame;
+﻿namespace GuessGame.Services;
 
 public class NumberComparer : IComparer
 {
