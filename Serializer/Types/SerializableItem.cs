@@ -1,6 +1,6 @@
 ﻿namespace Serializer.SerializableTypes;
 
-public class F
+public class SerializableItem
 {
     public int i1 => 1;
     public int i2 => 2;

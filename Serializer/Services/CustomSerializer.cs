@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using Serializer.Extensions;
+using System.Reflection;
 using System.Text;
+using System.Text.Json.Nodes;
 
 namespace Serializer.Services;
 
@@ -20,5 +22,17 @@ public class CustomSerializer : ICustomSerializer
         stringBuilder.Append("}");
 
         return stringBuilder.ToString();
+    }
+
+    public object Deserialize(Type targetType, string json)
+    {
+        JsonNode jsonNode = JsonNode.Parse(json) 
+            ?? throw new Exception();
+
+        ConstructorInfo constructor = targetType.GetConstructors().First();
+        ParameterInfo constructorParameter = constructor.GetParameters().First();
+        string constructorValue = jsonNode[constructorParameter.Name!.Capitalize()]!.ToString();
+
+        return Activator.CreateInstance(targetType, constructorValue)!;
     }
 }
