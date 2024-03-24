@@ -14,14 +14,14 @@ Console.WriteLine("[JsonSerializer] Результат сериализации:
 Console.WriteLine(systemJsonSerializedString);
 Console.WriteLine();
 
-TimeSpan customSerializerResult = RunCustomSerializer(1000);
-TimeSpan jsonSerializerResult = RunJsonSerializer(1000);
-Console.WriteLine($"Разница customSerializerResult-jsonSerializerResult: {customSerializerResult - jsonSerializerResult}");
+long customSerializerResult = RunCustomSerializer(1000);
+long jsonSerializerResult = RunJsonSerializer(1000);
+Console.WriteLine($"Разница customSerializerResult-jsonSerializerResult: {customSerializerResult - jsonSerializerResult} мс");
 Console.WriteLine();
 
 customSerializerResult = RunCustomSerializer(1000000);
 jsonSerializerResult = RunJsonSerializer(1000000);
-Console.WriteLine($"Разница customSerializerResult-jsonSerializerResult: {customSerializerResult - jsonSerializerResult}");
+Console.WriteLine($"Разница customSerializerResult-jsonSerializerResult: {customSerializerResult - jsonSerializerResult} мс");
 Console.WriteLine();
 
 string json = File.ReadAllText("Files\\Test.json");
@@ -31,19 +31,19 @@ Stopwatch stopWatch = new();
 stopWatch.Start();
 var testObject1 = customSerializer.Deserialize(typeof(DeserializableItem), json);
 stopWatch.Stop();
-Console.WriteLine($"[CustomSerializer] Десериализация заняло {stopWatch.Elapsed}");
-TimeSpan time1 = stopWatch.Elapsed;
+Console.WriteLine($"[CustomSerializer] Десериализация заняло {stopWatch.ElapsedMilliseconds} мс");
+long time1 = stopWatch.ElapsedMilliseconds;
 
 stopWatch.Restart();
 JsonSerializer.Deserialize<DeserializableItem>(json);
 stopWatch.Stop();
-Console.WriteLine($"[JsonSerializer] Десериализация заняло {stopWatch.Elapsed}");
-TimeSpan time2 = stopWatch.Elapsed;
-Console.WriteLine($"Разница customSerializerResult-jsonSerializerResult: {time1 - time2}");
+Console.WriteLine($"[JsonSerializer] Десериализация заняло {stopWatch.ElapsedMilliseconds}");
+long time2 = stopWatch.ElapsedMilliseconds;
+Console.WriteLine($"Разница customSerializerResult-jsonSerializerResult: {time1 - time2} мс");
 
 Console.ReadKey();
 
-static TimeSpan RunCustomSerializer(int itreations)
+static long RunCustomSerializer(int itreations)
 {
     List<SerializableItem> testObjects = [];
     for (int i = 0; i < itreations; i++)
@@ -60,12 +60,12 @@ static TimeSpan RunCustomSerializer(int itreations)
     }
 
     stopWatch.Stop();
-    Console.WriteLine($"[CustomSerializer] Сериализация {itreations} объектов заняло {stopWatch.Elapsed}");
+    Console.WriteLine($"[CustomSerializer] Сериализация {itreations} объектов заняло {stopWatch.ElapsedMilliseconds} мс");
 
-    return stopWatch.Elapsed;
+    return stopWatch.ElapsedMilliseconds;
 }
 
-static TimeSpan RunJsonSerializer(int itreations)
+static long RunJsonSerializer(int itreations)
 {
     List<SerializableItem> testObjects = [];
     for (int i = 0; i < itreations; i++)
@@ -81,7 +81,7 @@ static TimeSpan RunJsonSerializer(int itreations)
     }
 
     stopWatch.Stop();
-    Console.WriteLine($"[JsonSerializer] Сериализация {itreations} объектов заняло {stopWatch.Elapsed}");
+    Console.WriteLine($"[JsonSerializer] Сериализация {itreations} объектов заняло {stopWatch.ElapsedMilliseconds} мс");
 
-    return stopWatch.Elapsed;
+    return stopWatch.ElapsedMilliseconds;
 }
